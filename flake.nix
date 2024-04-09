@@ -5,10 +5,17 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
   };
 
-  outputs = { self, nixpkgs }: {
+  outputs = { self, nixpkgs }: let
+    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    packageOverrides = let
+      all = pkgs.callPackage ./python-packages.nix { };
+    in self: super:
+    #builtins.removeAttrs (all self super) ["pyperclip"];
+    { inherit (all self super) pyqtdarktheme sphinxext-rediraffe textual; };
+    python3 = pkgs.python3.override { inherit packageOverrides; };
+  in {
     devShells.x86_64-linux.default = let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-      python = pkgs.python3.withPackages (p: with p; [
+      python = python3.withPackages (p: with p; [
         attrs
         cbor2
         numpy
@@ -19,7 +26,7 @@
         pyyaml
         requests
         typing-extensions
-        #textual
+        textual
         xlsxwriter
         exceptiongroup
         h5py
@@ -31,7 +38,7 @@
         psutil
         pyperclip
         pyside6
-        #pyqtdarktheme
+        pyqtdarktheme
         pyqtgraph
         qtawesome
         qtpy
@@ -41,7 +48,7 @@
         sphinx
         sphinx-design
         pydata-sphinx-theme
-        #sphinxext-rediraffe
+        sphinxext-rediraffe
         sphinx-notfound-page
 
         pip
