@@ -145,5 +145,6 @@
     packages.x86_64-linux.acconeer-python-exploration-app = acconeer-python-exploration-app;
     apps.x86_64-linux.acconeer-python-exploration-app-new = { type = "app"; program = "${acconeer-python-exploration-app}/bin/acconeer-exptool-app-new"; };
     apps.x86_64-linux.acconeer-python-exploration-app-old = { type = "app"; program = "${acconeer-python-exploration-app}/bin/acconeer-exptool-app-old"; };
+    apps.x86_64-linux.default = { type = "app"; program = "${acconeer-python-exploration-app}/bin/acconeer-exptool-app-new"; };
   };
 }
